@@ -3,7 +3,9 @@ import random
 
 #TODO: implementation for getting private key
 #TODO: write private_key to file, public_key to stdout
-#TODO: encrypt/decrypt functions, so you can actually use it
+#TODO: encrypt/decrypt functions, so you can actually use it for something
+
+#TODO: move primes to a file, to read in instead of always recomputing
 
 #gets a coprime of n. A coprime is a value x such that the
 #greatest common denominator between n and x is 1
