@@ -5,8 +5,6 @@ import random
 #TODO: write private_key to file, public_key to stdout
 #TODO: encrypt/decrypt functions, so you can actually use it for something
 
-#TODO: move primes to a file, to read in instead of always recomputing
-
 #gets a coprime of n. A coprime is a value x such that the
 #greatest common denominator between n and x is 1
 #easiest way is to get a prime number and ensure
@@ -25,7 +23,7 @@ def get_coprime(n, primes):
             return prime
 
 #calculates d, the modular multiplicative inverse of e(mod(totient))
-#this will be the private key needed to decrypt messages 
+#this will be the private key needed to decrypt messages
 def modular_mult_inverse(e, totient):
     pass
 
@@ -39,11 +37,21 @@ def is_prime(n):
 def get_random_prime(primes):
     return random.choice(primes)
 
+#reads in the primes from the local file "primes.txt",
+#generated from generate_key.py
+def read_primes():
+    primes = []
+    with open("primes.txt", "r") as in_file:
+        for line in in_file:
+            if line != '':
+                primes.append(int(line.replace('\n', ''))) #strip \n
+    return primes
+
 #generates a public and private key, storing them in a file
 #note that the primes generated in real RSA encryption are
 #1024 bits long, to foil any reasonable attempt to factor them
 def generate_key():
-    primes = [x for x in range(2,1000000) if is_prime(x)]
+    primes = read_primes()
     prime1 = get_random_prime(primes)
     prime2 = get_random_prime(primes)
     n = prime1 * prime2
