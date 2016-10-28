@@ -1,8 +1,7 @@
 import math
 import random
+import os
 
-#TODO: implementation for getting private key
-#TODO: write private_key to file, public_key to stdout
 #TODO: encrypt/decrypt functions, so you can actually use it for something
 
 #gets a coprime of n. A coprime is a value x such that the
@@ -24,8 +23,34 @@ def get_coprime(n, primes):
 
 #calculates d, the modular multiplicative inverse of e(mod(totient))
 #this will be the private key needed to decrypt messages
+#the math behind this is honestly a bit of a black box to me
+#this function would also probably need optimizing if you were using
+#the full size of ints for a really secure implementation
 def modular_mult_inverse(e, totient):
-    pass
+    nt = 1
+    r = totient
+    t = 0
+
+    if totient < 0:
+        totient = -totient;
+    if e < 0:
+        e = totient - (-e % totient)
+
+    nr = e % totient
+    while nr != 0:
+        quot = r/nr | 0;
+        temp = nt
+        nt = t - quot*nt
+        t = temp
+        temp = nr
+        nr = r - quot*nr
+        r = temp
+
+    if r > 1:
+        return -1
+    if t < 0:
+        t += totient
+    return t
 
 #tells if an int n is prime
 def is_prime(n):
@@ -63,5 +88,18 @@ def generate_key():
 
     print "Your public key:", public_key
     print "\nSend this out to the world!\nAnyone who wants to securely communicate with you will need to use it to encrypt their messages to you. "
+
+    with open("public_key.txt", "w+") as out_file:
+        out_file.write(str(public_key))
+        out_file.write("\n")
+
+    with open("private_key.txt", "w+") as out_file:
+        out_file.write(str(private_key))
+        out_file.write("\n")
+
+    os.chmod("private_key.txt", 0o400) #change permissions so only owner can read
+
+    print "Your private key (used for decrypting messages to you) has been saved in ./private_key.txt"
+    print "Do NOT share this key with anyone. Keep it hidden."
 
 generate_key()
