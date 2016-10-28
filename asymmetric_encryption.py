@@ -4,7 +4,7 @@ import os
 
 #TODO: performance! (cpython, exponentiation by squaring)
 #TODO: write string functions
-#TODO: toggle SAFE_PRIVATE_KEY_WRITE
+#TODO: toggle SAFE_PRIVATE_KEY_WRITE back to True
 #TODO: remove globals
 
 SAFE_PRIVATE_KEY_WRITE = False
