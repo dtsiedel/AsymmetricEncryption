@@ -2,14 +2,41 @@ import math
 import random
 import os
 
-#TODO: encrypt/decrypt functions, so you can actually use it for something
+#TODO: performance! (cpython, exponentiation by squaring)
+#TODO: write string functions
+#TODO: toggle SAFE_PRIVATE_KEY_WRITE
+#TODO: remove globals
+
+SAFE_PRIVATE_KEY_WRITE = False
+
+#for ease of testing. Not good to have this in final version
+GLOBAL_PRODUCT = 0
+GLOBAL_EXPONENT = 0
+GLOBAL_PRIVATE = 0
+
+#given the n and exponent of a
+def encrypt_int(m, n, e):
+    return (m**e) % n
+
+#given a message and the corresponding private key,
+#decrypt it
+def decrypt_int(c, private_key, n):
+    return (c**private_key) % n
+
+#encrypts and decrypts the given int, to test the functions
+def test_int(m, n, e, d):
+    print "Int test:"
+    if(decrypt_int(encrypt_int(m, n, e), d, n) == m):
+        print "->Passed"
+    else:
+        print "->Failed"
 
 #gets a coprime of n. A coprime is a value x such that the
 #greatest common denominator between n and x is 1
 #easiest way is to get a prime number and ensure
 def get_coprime(n, primes):
     #3 is most common choice for e for some reason
-    #so i check this first. I only use another number if
+    #so I check this first. I only use another number if
     #3 is not coprime with n
 
     #my assumption is that it is best to use a small number
@@ -76,6 +103,12 @@ def read_primes():
 #note that the primes generated in real RSA encryption are
 #1024 bits long, to foil any reasonable attempt to factor them
 def generate_key():
+    #to be removed
+    global GLOBAL_PRODUCT
+    global GLOBAL_EXPONENT
+    global GLOBAL_PRIVATE
+    #
+
     primes = read_primes()
     prime1 = get_random_prime(primes)
     prime2 = get_random_prime(primes)
@@ -85,6 +118,12 @@ def generate_key():
 
     public_key = str(n) + "-" + str(e)
     private_key = modular_mult_inverse(e, totient)
+
+    #also to be removed
+    GLOBAL_PRODUCT = int(n)
+    GLOBAL_EXPONENT = int(e)
+    GLOBAL_PRIVATE = int(private_key)
+    #
 
     print "Your public key:", public_key
     print "\nSend this out to the world!\nAnyone who wants to securely communicate with you will need to use it to encrypt their messages to you. "
@@ -97,9 +136,12 @@ def generate_key():
         out_file.write(str(private_key))
         out_file.write("\n")
 
-    os.chmod("private_key.txt", 0o400) #change permissions so only owner can read
+    if(SAFE_PRIVATE_KEY_WRITE):
+        os.chmod("private_key.txt", 0o400) #change permissions so only owner can read
 
     print "Your private key (used for decrypting messages to you) has been saved in ./private_key.txt"
     print "Do NOT share this key with anyone. Keep it hidden."
 
+
 generate_key()
+test_int(65, GLOBAL_PRODUCT, GLOBAL_EXPONENT, GLOBAL_PRIVATE)
