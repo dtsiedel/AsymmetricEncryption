@@ -1,8 +1,8 @@
 import math
 import random
 import os
+import numpy
 
-#TODO: performance! (cpython, exponentiation by squaring)
 #TODO: write string functions
 #TODO: toggle SAFE_PRIVATE_KEY_WRITE back to True
 #TODO: remove globals
@@ -21,18 +21,32 @@ def encrypt_int(m, n, e):
 #given a message and the corresponding private key,
 #decrypt it
 def decrypt_int(c, private_key, n):
-    return (c**private_key) % n
+    return pow(c, private_key, n)
 
 #encrypts and decrypts the given int, to test the functions
 def test_int(m, n, e, d):
     print "Int test on", m
     encrypted = encrypt_int(m, n, e)
-    print "Encrypted:", encrypted
     decrypted = decrypt_int(encrypted, d, n)
+    print "Result:", decrypted
     if(decrypted == m):
         print "->Passed"
     else:
         print "->Failed"
+
+#a faster (hopefully) implementation of the exponent function,
+#using the exponentiation-by-squares method
+def fast_exp(x, n):
+    if n < 0:
+        return fast_exp(1/x, -n)
+    elif n == 0:
+        return 1
+    elif n == 1:
+        return x
+    elif n % 2 == 0:
+        return fast_exp(x*x, n/2)
+    else:
+        return x * fast_exp(x*x, (n-1)/2)
 
 #gets a coprime of n. A coprime is a value x such that the
 #greatest common denominator between n and x is 1
@@ -147,4 +161,4 @@ def generate_key():
 
 
 generate_key()
-test_int(65, GLOBAL_PRODUCT, GLOBAL_EXPONENT, GLOBAL_PRIVATE)
+test_int(15, GLOBAL_PRODUCT, GLOBAL_EXPONENT, GLOBAL_PRIVATE)
