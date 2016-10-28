@@ -25,8 +25,11 @@ def decrypt_int(c, private_key, n):
 
 #encrypts and decrypts the given int, to test the functions
 def test_int(m, n, e, d):
-    print "Int test:"
-    if(decrypt_int(encrypt_int(m, n, e), d, n) == m):
+    print "Int test on", m
+    encrypted = encrypt_int(m, n, e)
+    print "Encrypted:", encrypted
+    decrypted = decrypt_int(encrypted, d, n)
+    if(decrypted == m):
         print "->Passed"
     else:
         print "->Failed"
