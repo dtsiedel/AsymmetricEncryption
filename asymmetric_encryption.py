@@ -13,6 +13,7 @@ SAFE_PRIVATE_KEY_WRITE = False
 GLOBAL_PRODUCT = 0
 GLOBAL_EXPONENT = 0
 GLOBAL_PRIVATE = 0
+##################
 
 #given the n and exponent of a
 def encrypt_int(m, n, e):
@@ -23,12 +24,28 @@ def encrypt_int(m, n, e):
 def decrypt_int(c, private_key, n):
     return pow(c, private_key, n)
 
+
+#the main function to encrypt a string
+#probably have to do this differently since
+#right now it reveals the number of chars in the string
+def encrypt_string(message, n, e):
+    encrypted_letters = ""
+    for letter in message:
+        m = ord(letter)
+        encrypted_letters += str((encrypt_int(m, n, e)))
+        encrypted_letters += "-"
+
+    encrypted_letters = encrypted_letters[:-1]
+    print encrypted_letters
+
+
+
 #encrypts and decrypts the given int, to test the functions
-def test_int(m, n, e, d):
+def test_int(n, e, d):
+    m = random.randint(1, 1000)
     print "Int test on", m
     encrypted = encrypt_int(m, n, e)
     decrypted = decrypt_int(encrypted, d, n)
-    print "Result:", decrypted
     if(decrypted == m):
         print "->Passed"
     else:
@@ -124,7 +141,7 @@ def generate_key():
     global GLOBAL_PRODUCT
     global GLOBAL_EXPONENT
     global GLOBAL_PRIVATE
-    #
+    ##################
 
     primes = read_primes()
     prime1 = get_random_prime(primes)
@@ -140,7 +157,7 @@ def generate_key():
     GLOBAL_PRODUCT = int(n)
     GLOBAL_EXPONENT = int(e)
     GLOBAL_PRIVATE = int(private_key)
-    #
+    ##################
 
     print "Your public key:", public_key
     print "\nSend this out to the world!\nAnyone who wants to securely communicate with you will need to use it to encrypt their messages to you. "
@@ -161,4 +178,5 @@ def generate_key():
 
 
 generate_key()
-test_int(15, GLOBAL_PRODUCT, GLOBAL_EXPONENT, GLOBAL_PRIVATE)
+test_int(GLOBAL_PRODUCT, GLOBAL_EXPONENT, GLOBAL_PRIVATE)
+encrypt_string("stuff", GLOBAL_PRODUCT, GLOBAL_EXPONENT)
