@@ -3,8 +3,16 @@ import random
 import os
 import numpy
 
-#TODO: write string functions
-#TODO: toggle SAFE_PRIVATE_KEY_WRITE back to True
+##########################################################
+#Future:                                                 #
+#Write Symmetric Key Encryption.                         #
+#Use this to have one machine generate the shared key,   #
+#and securely send it to the other.                      #
+#Use the shared key to encrypt/decrypt                   #
+##########################################################
+
+
+#TODO: toggle SAFE_PRIVATE_KEY_WRITE back to True when done testing
 #TODO: remove globals
 
 SAFE_PRIVATE_KEY_WRITE = False
