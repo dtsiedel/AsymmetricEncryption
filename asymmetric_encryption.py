@@ -59,20 +59,6 @@ def test_int(n, e, d):
     else:
         print "->Failed"
 
-#a faster (hopefully) implementation of the exponent function,
-#using the exponentiation-by-squares method
-def fast_exp(x, n):
-    if n < 0:
-        return fast_exp(1/x, -n)
-    elif n == 0:
-        return 1
-    elif n == 1:
-        return x
-    elif n % 2 == 0:
-        return fast_exp(x*x, n/2)
-    else:
-        return x * fast_exp(x*x, (n-1)/2)
-
 #gets a coprime of n. A coprime is a value x such that the
 #greatest common denominator between n and x is 1
 #easiest way is to get a prime number and ensure
@@ -187,4 +173,4 @@ def generate_key():
 
 generate_key()
 test_int(GLOBAL_PRODUCT, GLOBAL_EXPONENT, GLOBAL_PRIVATE)
-encrypt_string("stuff", GLOBAL_PRODUCT, GLOBAL_EXPONENT)
+#encrypt_string("stuff", GLOBAL_PRODUCT, GLOBAL_EXPONENT)
