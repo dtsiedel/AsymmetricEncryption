@@ -173,4 +173,3 @@ def generate_key():
 
 generate_key()
 test_int(GLOBAL_PRODUCT, GLOBAL_EXPONENT, GLOBAL_PRIVATE)
-#encrypt_string("stuff", GLOBAL_PRODUCT, GLOBAL_EXPONENT)
