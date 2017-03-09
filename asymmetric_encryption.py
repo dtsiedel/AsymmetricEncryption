@@ -9,6 +9,8 @@ import numpy
 #Use this to have one machine generate the shared key,   #
 #and securely send it to the other.                      #
 #Use the shared key to encrypt/decrypt                   #
+#This is how real systems do it, since asymmetric is     # 
+#fairly CPU-intensive                                    #
 ##########################################################
 
 
